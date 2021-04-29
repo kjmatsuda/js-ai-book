@@ -1,0 +1,7 @@
+- [2021-04-29 木]
+  - Teachable Machine 
+    https://teachablemachine.withgoogle.com/train/image
+  - Teachable Machine 上で手、ペン、マグカップを学習したモデルを保存した
+    - tm-my-image-model.zip
+  - プロジェクトは以下に保存した
+    - project.tm
