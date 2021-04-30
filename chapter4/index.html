@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>サンプルデモ</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>サンプルデモ</h1>
+
+        <input id="btn" type="file"><br />
+        
+        <div id="imgBox"></div>
+        <h2 id="label"></h2>
+        
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+        
+        <script>
+         const btn = document.getElementById('btn');
+         const imgBox = document.getElementById('imgBox');
+         const label = document.getElementById('label');
+
+         const teachableMachineURL = "https://teachablemachine.withgoogle.com/models/rcstVu2zX/";
+
+         let model;
+
+         const startEvent = async() => {
+             model = await tmImage.load(teachableMachineURL +'model.json', teachableMachineURL+'metadata.json');
+
+             const img = document.createElement('img');
+             img.width = '250';
+             img.height = '250';
+
+             img.src = window.URL.createObjectURL(btn.files[0]);
+
+             // 画像の読み込みが完了したときの処理
+             img.onload = async () => {
+                 imgBox.appendChild(img);
+
+                 // 生成したURLをメモリーから解放
+                 window.URL.revokeObjectURL(img.src);
+
+                 await predict(img);
+             }
+         }
+
+         const predict = async image => {
+             const prediction = await model.predict(img);
+
+             for (let i = 0; i < model.getTotalClasses(); i++) {
+                 const name = prediction[i].className;
+                 const value = prediction[i].probability.toFixed(2);
+                 if (value > 0.85) {
+                     label.textContent = `これは${name}です!`
+                 }
+             }
+
+         }
+
+         btn.addEventListener('change', startEvent);
+        </script>
+    </body>
+</html>
