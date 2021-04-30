@@ -45,7 +45,7 @@
          }
 
          const predict = async image => {
-             const prediction = await model.predict(img);
+             const prediction = await model.predict(image);
 
              for (let i = 0; i < model.getTotalClasses(); i++) {
                  const name = prediction[i].className;
